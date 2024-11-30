@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>smooth.video</title>
+    </head>
+    <style>
+        body {
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            max-width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <body>
+        <div id="video"></div>
+        <script type="module">
+            import Smooth from "https://sdk.smooth.video/smooth.js"
+
+            const urlParams = new URLSearchParams(window.location.search)
+
+            try {
+                const data = urlParams.get("data")
+                if (data) vidyn.set(JSON.parse(urlParams.get("data")))
+            } catch (error) {}
+
+            if (urlParams.has("data")) {
+                try {
+                    vidyn.set(JSON.parse(urlParams.get("data")))
+                } catch (error) {}
+            }
+
+            window.addEventListener("message", e => {
+                try {
+                    const { type, data } = JSON.parse(e.data)
+
+                    switch (type) {
+                        case "data":
+                            vidyn.set(data)
+                            break
+                        case "download":
+                            vidyn.exportMP4()
+                            break
+                    }
+                } catch (error) {}
+            })
+
+            const smooth = new Smooth(document.querySelector("#video"))
+        </script>
+    </body>
+</html>
