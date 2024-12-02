@@ -24,18 +24,10 @@
         <script type="module">
             import Smooth from "https://sdk.smooth.video/smooth.js"
 
+            const smooth = new Smooth(document.querySelector("#video"))
+
             const urlParams = new URLSearchParams(window.location.search)
-
-            try {
-                const data = urlParams.get("data")
-                if (data) vidyn.set(JSON.parse(urlParams.get("data")))
-            } catch (error) {}
-
-            if (urlParams.has("data")) {
-                try {
-                    vidyn.set(JSON.parse(urlParams.get("data")))
-                } catch (error) {}
-            }
+            if (urlParams.has("data")) smooth.set(JSON.parse(urlParams.get("data")))
 
             window.addEventListener("message", e => {
                 try {
@@ -43,16 +35,14 @@
 
                     switch (type) {
                         case "data":
-                            vidyn.set(data)
+                            smooth.set(data)
                             break
                         case "download":
-                            vidyn.exportMP4()
+                            smooth.exportMP4()
                             break
                     }
                 } catch (error) {}
             })
-
-            const smooth = new Smooth(document.querySelector("#video"))
         </script>
     </body>
 </html>
